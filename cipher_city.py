@@ -51,7 +51,7 @@ def shift_cipher_menu():
     print("\nWelcome to Shift Cipher!")
     print("1: Encrypt a message")
     print("2: Decrypt a message")
-    print("3: Go to main menu")
+    print("3: Go to main menu\n")
     
     try:
         choice = int(input("Choose your option: "))
@@ -147,7 +147,7 @@ def affine_cipher_menu():
     print("\nWelcome to Affine Cipher!")
     print("1: Encrypt a message")
     print("2: Decrypt a message")
-    print("3: Go to main menu")
+    print("3: Go to main menu\n")
     
     try:
         choice = int(input("Choose your option: "))
@@ -168,39 +168,76 @@ def affine_cipher_menu():
 def vigenere_cipher_menu():
     
     def vigenere_cipher_encrypt():
-        # THIS ISNT COMPLETE
         plaintext = (input("\nEnter the text to be encrypted using a Vigenère cipher: ")).lower()
         key = (input("Enter a key: ")).lower()
         key_ASCII = []
         
-        # puts ASCII values -97 of key into the list
-        for i in range(0, len(key)):
+        for i in range(0, len(key)): # puts shift of each key into list
             key_val = ord(key[i])
             key_ASCII.append(key_val-97)
-        print(key_ASCII)
+        
         ciphertext = ""
-        # LEAVE ONlY ALPHABET IN PLAINTEXT
+        
         if(key.isalpha()): # key must be only letters
-            for i in range(len(plaintext)):
-                for j in key_ASCII:
-                    print(j)
-                    i=i+1
+            i = 0
+            while(i < len(plaintext)):
+                # key_ASCII[i%len(key)] determines how much to shift each letter by
+                shift = key_ASCII[i%len(key)]
+                
+                char_val = ord(plaintext[i]) # grabs ASCII value
+                if((char_val >= 97) and (char_val <= 122)): # only checking lowercase because string is made all lowercase
+                    char_val = ((char_val - 97 + shift) % 26) + 97 # shifts the letter using mod 26
+                    ciphertext = ciphertext + chr(char_val).upper() # adds to final ciphertext
+                
+                i += 1
+            
+            print("\nYour ciphertext for the plaintext \""+plaintext+"\" while using a key of "+str(key)+" is...")
+            print(ciphertext)
+                
         else:
             print("\n Invalid key. Key must be only letters.")
             vigenere_cipher_menu()
         
-        
-        
-        
-        
+        vigenere_cipher_menu()
+            
     def vigenere_cipher_decrypt():
-        print("Vigenère cipher decrypt doesn't work yet")
+        ciphertext = input("\nEnter the ciphertext to be decrypted using a Vigenère cipher: ").lower()
+        key = input("Enter the key: ").lower()
+        
+        key_ASCII = []
+        for i in range(0, len(key)): # puts shift of each key into list
+            key_val = ord(key[i])
+            key_ASCII.append(key_val-97)
+        
+        plaintext = ""
+        
+        if(key.isalpha()): # key must be only letters
+            i = 0
+            while(i < len(ciphertext)):
+                # key_ASCII[i%len(key)] determines how much to shift each letter by
+                shift = key_ASCII[i%len(key)]
+                
+                char_val = ord(ciphertext[i]) # grabs ASCII value
+                if((char_val >= 97) and (char_val <= 122)): # only checking lowercase because string is made all lowercase
+                    char_val = ((char_val - 97 - shift) % 26) + 97 # shifts the letter using mod 26
+                    plaintext = plaintext + chr(char_val).upper() # adds to final ciphertext
+                
+                i += 1
+            
+            print("\nYour plaintext for the ciphertext \""+ciphertext+"\" while using a key of "+str(key)+" is...")
+            print(plaintext)
+                
+        else:
+            print("\n Invalid key. Key must be only letters.")
+            vigenere_cipher_menu()
+        
+        vigenere_cipher_menu()
     
     
     print("\nWelcome to Vigenere Cipher!")
     print("1: Encrypt a message")
     print("2: Decrypt a message")
-    print("3: Go to main menu")
+    print("3: Go to main menu\n")
     
     try:
         choice = int(input("Choose your option: "))
@@ -219,13 +256,48 @@ def vigenere_cipher_menu():
     except ValueError:
         print("\nEnter an integer please")
         vigenere_cipher_menu()
+        
+def playfair_cipher_menu():
+    
+    def playfair_cipher_decrypt():
+        print("Playfair cipher decrypt doesn't work yet")
+        playfair_cipher_menu()
+        
+    def playfair_cipher_encrypt():
+        print("Playfair cipher encrypt doesn't work yet")
+        playfair_cipher_menu()
+        
+    print("\nWelcome to Playfair Cipher!")
+    print("1: Encrypt a message")
+    print("2: Decrypt a message")
+    print("3: Go to main menu\n")
+    
+    try:
+        choice = int(input("Choose your option: "))
+        
+        if(choice == 1):
+            playfair_cipher_encrypt()
+        elif(choice == 2):
+            playfair_cipher_decrypt()
+        elif(choice == 3):
+            print("\nExiting to main menu")
+            main()
+        else:
+            print("")
+            print("Invalid input")
+            playfair_cipher_menu()
+    except ValueError:
+        print("\nEnter an integer please")
+        vigenere_cipher_menu()
+    
     
 def main():
     print("\nWelcome to Cipher City! Which cipher would you like to use?")
     print("1. Shift Cipher")
     print("2. Affine Cipher")
     print("3. Vigenere Chipher")
-    print("4: End program")
+    print("4. Playfair Cipher")
+    print("5. End program\n")
     
     try:
         menu = int(input("Choose your option: "))
@@ -236,6 +308,8 @@ def main():
         elif(menu == 3):
             vigenere_cipher_menu()
         elif(menu==4):
+            playfair_cipher_menu()
+        elif(menu==5):
             print("\nProgram ending")
         else:
             print("\nInvalid input")
